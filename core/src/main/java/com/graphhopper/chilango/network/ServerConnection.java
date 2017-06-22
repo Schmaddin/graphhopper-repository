@@ -32,9 +32,18 @@ public class ServerConnection {
 	public final static String encText = "thisIstheFirstKK";
 	public final static SecretKeySpec encryptionKey = new SecretKeySpec(encText.getBytes(), "Blowfish");
 
-	public final static String hostname = Constants.SERVER_IP;//"192.168.178.25";
+	public final static String hostname = Constants.SERVER_IP;
 
 	public final static int timeout = 5000;
+
+	public ObjectInputStream getIn() {
+		return in;
+	}
+
+	public ObjectOutputStream getOut() {
+		return out;
+	}
+
 
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
@@ -43,9 +52,16 @@ public class ServerConnection {
 	private ConnectionMessage conncetionMessage = null;
 
 	public ServerConnection(EasyCrypt cryption, ServerMessageAuth auth) throws Exception {
+		this(cryption,auth,hostname);
+	}
+	
+	public ServerConnection(EasyCrypt cryption, ServerMessageAuth auth, String host) throws Exception {
 		this.cryption = cryption;
+		
+		if(host==null)
+			host=hostname;
 
-		SocketAddress serverAddress = new InetSocketAddress(hostname, Constants.SERVER_PORT_NUMBER);
+		SocketAddress serverAddress = new InetSocketAddress(host, Constants.SERVER_PORT_NUMBER);
 		try {
 			client = new Socket();
 			client.connect(serverAddress, timeout);
@@ -60,8 +76,6 @@ public class ServerConnection {
 		}
 
 		try {
-		//	CipherOutputStream cryptionStream = (CipherOutputStream) cryption
-		//			.encryptOutputStream();
 
 			out = new ObjectOutputStream(client.getOutputStream());
 			out.flush();

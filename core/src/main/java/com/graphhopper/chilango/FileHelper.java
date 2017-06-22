@@ -110,17 +110,13 @@ public class FileHelper {
 	public static void writeCryptedObject(ObjectOutputStream out, EasyCrypt cryption, Serializable object) throws Exception {
 		
 		out.writeObject(cryption.encrypt(object));
-		byte[] bytes = new byte[128];
-		//out.writeObject(bytes);
-		//cryption.getOuputCipher().doFinal();
+
 		out.flush();
 		System.out.println("object written");
 	}
 
 	public static Serializable readCryptedObject(ObjectInputStream inputStream, EasyCrypt cryption) throws Exception {
 		SealedObject readIn = (SealedObject) inputStream.readObject();
-		byte[] bytes = new byte[128];
-		//inputStream.read(bytes);
 
 		System.out.println("object read");
 		return cryption.decrypt(readIn);
