@@ -1,6 +1,7 @@
 package com.graphhopper.chilango.tasks;
 
 import com.graphhopper.chilango.data.BusBase;
+import com.graphhopper.chilango.data.database.SubmitType;
 
 /**
  * Created by martinwurflein on 08.06.17.
@@ -8,7 +9,7 @@ import com.graphhopper.chilango.data.BusBase;
 
 public class BusBaseTask extends ChilangoTask{
 
-    public static final String typeName="BusBaseTask";
+    public static final SubmitType typeName=SubmitType.submit_base_indication;
 
     private final BusBase base;
 

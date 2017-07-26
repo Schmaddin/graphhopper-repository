@@ -2,6 +2,7 @@ package com.graphhopper.chilango.tasks;
 
 import com.graphhopper.chilango.data.Route;
 import com.graphhopper.chilango.data.RouteQuestionary;
+import com.graphhopper.chilango.data.database.SubmitType;
 import com.graphhopper.chilango.data.gps.GPSPoint;
 
 import java.util.Map;
@@ -43,7 +44,7 @@ public class GPSRecordTask extends RecordTask{
     	
     }
 
-    public static final String typeName="GPSRecordTask";
+    public static final SubmitType typeName=SubmitType.submit_new_gps_route;
 
     public GPSRecordTask(Route route, String path, Map<Long,GPSPoint> gpsMap, Map<Long, Integer> fullness,Map<Long,GPSPoint> originalGPSMap,RouteQuestionary questionary,long uploadTime,long lastEdit,long ticket,String imagePath) {
         super(route,path,typeName,lastEdit,uploadTime,ticket,imagePath);

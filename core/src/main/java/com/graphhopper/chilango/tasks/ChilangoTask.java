@@ -2,11 +2,16 @@ package com.graphhopper.chilango.tasks;
 
 import java.io.Serializable;
 
+import com.github.filosganga.geogson.model.Geometry;
+import com.github.filosganga.geogson.model.Point;
+import com.graphhopper.chilango.data.database.SubmitType;
+import com.graphhopper.chilango.data.database.SubmitTypeInterface;
+
 /**
  * Created by martinwurflein on 25.04.17.
  */
 
-public abstract class ChilangoTask implements Serializable{
+public abstract class ChilangoTask implements Serializable, SubmitTypeInterface{
 
 
     /**
@@ -17,7 +22,7 @@ public abstract class ChilangoTask implements Serializable{
     protected final String path;
     protected final double latitude;
     protected final double longitude;
-    protected final String type;
+    protected final int type;
     protected final long uploadTime;
     protected final long lastEdit;
     protected final long ticket;
@@ -32,15 +37,15 @@ public abstract class ChilangoTask implements Serializable{
     	path=task.getPath();
     	latitude=task.getLatitude();
     	longitude=task.getLongitude();
-    	type=task.getType();
+    	type=task.getType().getValue();
     	lastEdit=task.getLastEdit();
     	imagePath=task.getImagePath();
     	this.uploadTime=uploadTime;
     	this.ticket=ticket;
     }
     
-    protected ChilangoTask(String path,String type,String name,double latitude,double longitude,long uploadTime,long lastEdit,long ticket,String imagePath) {
-        this.type = type;
+    protected ChilangoTask(String path,SubmitType type,String name,double latitude,double longitude,long uploadTime,long lastEdit,long ticket,String imagePath) {
+        this.type = type.getValue();
         this.path = path;
         this.name = name;
         this.latitude = latitude;
@@ -51,7 +56,7 @@ public abstract class ChilangoTask implements Serializable{
         this.imagePath = imagePath;
     }
 
-    public String getType(){ return type; }
+    public SubmitType getType(){ return SubmitType.getByValue(type); }
 
     public double getLatitude() {
         return latitude;
@@ -88,5 +93,6 @@ public abstract class ChilangoTask implements Serializable{
     }
 
     public long getTicket() { return ticket; }
+    
 
 }

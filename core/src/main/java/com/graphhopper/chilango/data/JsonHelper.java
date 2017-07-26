@@ -8,6 +8,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import com.github.filosganga.geogson.gson.GeometryAdapterFactory;
+import com.github.filosganga.geogson.jts.JtsAdapterFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -19,7 +21,9 @@ public class JsonHelper {
 	}
 
 	public static String createJsonFromObject(Object object) {
-		GsonBuilder newGsonBuilder = new GsonBuilder().serializeSpecialFloatingPointValues();
+
+		GsonBuilder newGsonBuilder = new GsonBuilder().serializeSpecialFloatingPointValues().registerTypeAdapterFactory(new GeometryAdapterFactory())
+				.registerTypeAdapterFactory(new JtsAdapterFactory());
 		Gson gson = newGsonBuilder.create();
 		return gson.toJson(object);
 	}
@@ -57,7 +61,8 @@ public class JsonHelper {
 	}
 
 	public static Object parseJson(String json,Class classType){
-		GsonBuilder newGsonBuilder = new GsonBuilder().serializeSpecialFloatingPointValues();
+		GsonBuilder newGsonBuilder = new GsonBuilder().serializeSpecialFloatingPointValues().registerTypeAdapterFactory(new GeometryAdapterFactory())
+				.registerTypeAdapterFactory(new JtsAdapterFactory());
 		Gson gson = newGsonBuilder.create();
 		return (Object) gson.fromJson(json, classType);
 	}

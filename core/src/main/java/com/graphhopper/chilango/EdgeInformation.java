@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.graphhopper.GraphHopper;
-import com.graphhopper.chilango.data.RouteOutdatedFormat;
+import com.graphhopper.chilango.data.Route;
 
 public class EdgeInformation {
 
@@ -20,7 +20,7 @@ public class EdgeInformation {
 	public static int maxIndex = 31268;
 	private static byte[][][] edgeInformation = new byte[2][maxIndex][24 * 4];
 	private static Map<Integer, Integer[]> routesOnEdges;
-	private static Map<Integer, RouteOutdatedFormat> routes = new HashMap<>();
+	private static Map<Integer, Route> routes = new HashMap<>();
 	private static String path = "";
 	private static boolean init = false;
 	private static GraphHopper hopper;
@@ -43,8 +43,8 @@ public class EdgeInformation {
 			FileInputStream readRoutesStream = new FileInputStream(path + "/routes.dat");
 			ObjectInputStream readRoutesObject = new ObjectInputStream(readRoutesStream);
 
-			Set<RouteOutdatedFormat> routeSet = (Set<RouteOutdatedFormat>) readRoutesObject.readObject();
-			for (RouteOutdatedFormat current : routeSet) {
+			Set<Route> routeSet = (Set<Route>) readRoutesObject.readObject();
+			for (Route current : routeSet) {
 				routes.put(current.getId(), current);
 			}
 
@@ -112,13 +112,13 @@ public class EdgeInformation {
 		// TODO löschen
 		System.out.println("getRouteEdgeValue aufgerufen");
 
-		RouteOutdatedFormat route = routes.get(routeId);
+		Route route = routes.get(routeId);
 
 		return route.getFrequency().frequency[dayIndex][hour * 2 + minute / 30];
 
 	}
 
-	public static RouteOutdatedFormat getRoute(int id) {
+	public static Route getRoute(int id) {
 		return routes.get(id);
 	}
 

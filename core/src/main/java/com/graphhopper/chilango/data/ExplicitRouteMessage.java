@@ -2,49 +2,19 @@ package com.graphhopper.chilango.data;
 
 import java.io.Serializable;
 
-public class ExplicitRouteMessage implements Serializable{
+import com.graphhopper.chilango.data.database.SubmitType;
+import com.graphhopper.chilango.data.database.SubmitTypeInterface;
+
+public class ExplicitRouteMessage implements Serializable, SubmitTypeInterface{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public enum QuestionaryTypes implements Serializable{
-		route_not_found(0),route_not_exist(1),route_meta_wrong(2),route_time_wrong(3),route_points_wrong(4),route_frequency(5),route_ok(100),invalid(-1);
-		
-		private final int value;
-		
-		
-		QuestionaryTypes(int value)
-		{
-			this.value=value;
-		}
-		
-		public int getValue(){ return value; }
-		
-		public static QuestionaryTypes getByValue(int value){
-			switch(value){
-			case 0:
-				return route_not_found;
-			case 1:
-				return route_not_exist;
-			case 2:
-				return route_meta_wrong;
-			case 3:
-				return route_time_wrong;
-			case 4:
-				return route_points_wrong;
-			case 100:
-				return route_ok;
-			default:
-				return invalid;
-				
-			}
-			
-		}
-	}
+	
 	
 	public ExplicitRouteMessage(ExplicitRouteMessage message,long ticket)
 	{
-		type=message.getType();
+		type=message.getType().getValue();
 		route=message.getRoute();
 		routeId=message.getRouteId();
 		timestamp=message.getTimestamp();
@@ -59,7 +29,7 @@ public class ExplicitRouteMessage implements Serializable{
 	}
 
 	
-	public ExplicitRouteMessage(QuestionaryTypes type,Route route, int routeId, long timestamp, double lat, double lon,
+	public ExplicitRouteMessage(SubmitType type,Route route, int routeId, long timestamp, double lat, double lon,
 			RouteTimeBound bound, RouteQuestionary questionary, boolean suggestion, String comment,
 			Serializable[] extra,long ticket) {
 		super();
@@ -110,13 +80,10 @@ public class ExplicitRouteMessage implements Serializable{
 	public long getTicket() {
 		return ticket;
 	}
-	public int getType(){
-		return type;
+	public SubmitType getType(){
+		return SubmitType.getByValue(type);
 	}
 	
-	public QuestionaryTypes getQuestionaryType(){
-		return QuestionaryTypes.getByValue(type);
-	}
 
 	private final int type;
 	private final Route route;

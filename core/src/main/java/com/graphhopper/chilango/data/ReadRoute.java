@@ -38,28 +38,7 @@ public class ReadRoute {
 		return routes;
 	}
 
-	static public RouteOutdatedFormat readRoute(File file) {
 
-		RouteOutdatedFormat route = null;
-		// Exclude in BuildHelper?
-		try {
-			FileInputStream stream = new FileInputStream(file.getAbsolutePath());
-			ObjectInputStream objectStream = new ObjectInputStream(stream);
-
-			route = (RouteOutdatedFormat) objectStream.readObject();
-
-			stream.close();
-			objectStream.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		return route;
-	}
 
 
 	FileInputStream stream;
@@ -77,23 +56,6 @@ public class ReadRoute {
 
 	}
 
-	public RouteOutdatedFormat readRoute() {
-		RouteOutdatedFormat route = null;
-
-		try {
-			route = (RouteOutdatedFormat) objectStream.readObject();
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return route;
-	}
 	
 	public void closeFile() {
 		try {

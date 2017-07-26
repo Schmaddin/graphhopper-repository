@@ -88,18 +88,39 @@ public class FrequencyTimeBoundBuilder {
 			to.startMinute[i] = from.startMinute[i];
 			to.lastHour[i] = from.lastHour[i];
 			to.lastMinute[i] = from.lastMinute[i];
-			to.trustLevel = from.trustLevel;
 
 		}
 		to.trustLevel = from.trustLevel;
+	}
+	
+	public static void copyTimeBound(byte[] startH,byte[] startM,byte[] lastH,byte[] lastM,byte trust, RouteTimeBound to) {
+		for (int i = 0; i < startH.length; i++) {
+			to.startHour[i] = startH[i];
+			to.startMinute[i] = startM[i];
+			to.lastHour[i] = lastH[i];
+			to.lastMinute[i] = lastM[i];
+
+
+		}
+		to.trustLevel = trust;
 	}
 
 	public static void copyFrequency(RouteFrequency from, RouteFrequency to) {
 		for (int i = 0; i < 7; i++) {
 			for (int j = 0; j < 48; j++) {
-				to.frequency[i][j]=from.frequency[i][j];
+				to.frequency[i][j] = from.frequency[i][j];
 			}
 			to.trustLevel = from.trustLevel;
+
+		}
+	}
+	
+	public static void copyFrequency(byte[][] frequency, byte trustLevel, RouteFrequency to) {
+		for (int i = 0; i < 7; i++) {
+			for (int j = 0; j < 48; j++) {
+				to.frequency[i][j] = frequency[i][j];
+			}
+			to.trustLevel = trustLevel;
 
 		}
 	}
@@ -114,6 +135,114 @@ public class FrequencyTimeBoundBuilder {
 		}
 
 		return null;
+	}
+
+	public static int differenceInRoutes(Route a, Route b) {
+		if (a == b)
+			return 0;
+		if ((a == null && b != null) || (a != null && b == null))
+			return Integer.MAX_VALUE;
+
+		int difference = differenceInTimeBounds(a.getTimeBound(), b.getTimeBound());
+		System.out.println("difference: " + difference);
+		if (a.getBackWardRoute() != b.getBackWardRoute())
+			difference++;
+
+		if (!a.getFrom().equals(b.getFrom()))
+			difference++;
+		if (!a.getTo().equals(b.getTo()))
+			difference++;
+
+		if (!a.getHeadSign().equals(b.getHeadSign()))
+			difference++;
+
+		if (!a.getRouteName().equals(b.getRouteName()))
+			difference++;
+
+		if (a.getTransportType() != b.getTransportType())
+			difference++;
+
+		if (a.getOperatorId() != b.getOperatorId())
+			difference++;
+		System.out.println("difference: " + difference);
+
+		difference += differenceInStops(a.getStopInformation(), b.getStopInformation());
+
+		int nullValues=0;
+		if (a.getLat().length == b.getLat().length) {
+
+			for (int i = 0; i < a.getLat().length; i++) {
+				difference += almostEqualGPS(a.getLat()[i],b.getLat()[i]) ? 0 : 1;
+
+				difference += almostEqualGPS(a.getLon()[i],b.getLon()[i]) ? 0 : 1;
+
+				difference += a.getTimeStamp()[i] != b.getTimeStamp()[i] ? 1 : 0;
+				
+				nullValues += (a.getTimeStamp()[i]== 0L || b.getTimeStamp()[i]==0L) ? 1 : 0;
+			}
+			
+			if(difference==a.getTimeStamp().length && a.getTimeStamp().length==nullValues)
+				difference-=a.getTimeStamp().length;
+				
+		}else 
+			difference += Math.abs(a.getLat().length-b.getLat().length);
+		// maybe to compare more attributs?
+
+		return difference;
+	}
+
+	public static int differenceInStops(StopInformation a, StopInformation b) {
+		if (a == b)
+			return 0;
+		if ((a == null && b != null) || (a != null && b == null))
+			return 10;
+
+		int difference = 0;
+
+		if (a.getLatStop().length != b.getLatStop().length)
+			difference++;
+
+		for (int i = 0; i < a.getLatStop().length; i++) {
+			difference += almostEqualGPS(a.getLatStop()[i],b.getLatStop()[i]) ? 0 : 1;
+
+			difference += almostEqualGPS(a.getLonStop()[i],b.getLonStop()[i]) ? 0 : 1;
+
+			difference += !a.getStopName()[i].equals(b.getStopName()[i]) ? 1 : 0;
+
+			difference += a.getTime()[i] != b.getTime()[i] ? 1 : 0;
+
+			difference += a.getTimeAtStop()[i] != b.getTimeAtStop()[i] ? 1 : 0;
+		}
+
+		return difference;
+	}
+	
+	public static boolean almostEqualGPS(double a,double b)
+	{
+		return almostEqual(a,b,0.000001);
+	}
+	
+	public static boolean almostEqual(double a, double b, double eps){
+	    return Math.abs(a-b)<eps;
+	}
+
+	public static int differenceInTimeBounds(RouteTimeBound bound1, RouteTimeBound bound2) {
+		if (bound1 == bound2)
+			return 0;
+		if ((bound1 == null && bound2 != null) || (bound1 != null && bound2 == null))
+			return 13;
+
+		int difference = 0;
+
+		for (int i = 0; i < bound1.startMinute.length; i++) {
+			difference += bound1.startMinute[i] != bound2.startMinute[i] ? 1 : 0;
+			difference += bound1.lastMinute[i] != bound2.lastMinute[i] ? 1 : 0;
+			difference += bound1.startHour[i] != bound2.startHour[i] ? 1 : 0;
+			difference += bound1.lastHour[i] != bound2.lastHour[i] ? 1 : 0;
+		}
+		difference += bound1.trustLevel != bound2.trustLevel ? 1 : 0;
+
+		return difference;
 	}
 
 }

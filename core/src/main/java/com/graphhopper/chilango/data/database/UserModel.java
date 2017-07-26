@@ -1,5 +1,9 @@
 package com.graphhopper.chilango.data.database;
 
+import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
+
 import com.github.filosganga.geogson.model.Point;
 
 public class UserModel {
@@ -100,10 +104,14 @@ public class UserModel {
 	public void setHomePoint(Point homePoint) {
 		this.homePoint = homePoint;
 	}
+	
+	public List<PointModel> getPointModel() {
+		return pointModel;
+	}
 
 	public UserModel(String mail, String name, long userCreationTime, String pwHash, String token,
 			boolean mail_confirmation, String mailConfirmationToken, String imagePath, int points,
-			long pointsUpdateTime, int status, Point homePoint) {
+			long pointsUpdateTime, int status, Point homePoint, Point workPoint, int team) {
 		super();
 		this.mail = mail;
 		this.name = name;
@@ -117,7 +125,38 @@ public class UserModel {
 		this.pointsUpdateTime = pointsUpdateTime;
 		this.status = status;
 		this.homePoint=homePoint;
+		this.workPoint=workPoint;
+		this.team=team;
+		this.trust=0;
 
+	}
+	
+	public Point getWorkPoint() {
+		return workPoint;
+	}
+
+	public void setWorkPoint(Point workPoint) {
+		this.workPoint = workPoint;
+	}
+
+	public byte getTrust() {
+		return trust;
+	}
+
+	public void setTrust(byte trust) {
+		this.trust = trust;
+	}
+
+	public int getTeam() {
+		return team;
+	}
+
+	public void setTeam(int team) {
+		this.team = team;
+	}
+
+	public void setPointModel(List<PointModel> model) {
+		pointModel=model;
 	}
 
 	private String mail;
@@ -132,6 +171,12 @@ public class UserModel {
 	private long pointsUpdateTime;
 	private int status;
 	private Point homePoint;
+	private Point workPoint;
+	private byte trust;
+	private int team;
+	private List<PointModel> pointModel=new LinkedList<>();
+
+
 
 	public UserModel(String mail, String name, String pwHash) {
 		super();
@@ -144,5 +189,7 @@ public class UserModel {
 		pointsUpdateTime = userCreationTime;
 		status = 0;
 	}
+
+	
 
 }

@@ -44,7 +44,6 @@ public class ServerConnection {
 		return out;
 	}
 
-
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 	private Socket client;
@@ -52,16 +51,20 @@ public class ServerConnection {
 	private ConnectionMessage conncetionMessage = null;
 
 	public ServerConnection(EasyCrypt cryption, ServerMessageAuth auth) throws Exception {
-		this(cryption,auth,hostname);
+		this(cryption, auth, hostname);
 	}
-	
-	public ServerConnection(EasyCrypt cryption, ServerMessageAuth auth, String host) throws Exception {
-		this.cryption = cryption;
-		
-		if(host==null)
-			host=hostname;
 
-		SocketAddress serverAddress = new InetSocketAddress(host, Constants.SERVER_PORT_NUMBER);
+	public ServerConnection(EasyCrypt cryption, ServerMessageAuth auth, String host) throws Exception {
+		this(cryption, auth, host, Constants.SERVER_PORT_NUMBER_INTERN);
+	}
+
+	public ServerConnection(EasyCrypt cryption, ServerMessageAuth auth, String host, int port) throws Exception {
+		this.cryption = cryption;
+
+		if (host == null)
+			host = hostname;
+
+		SocketAddress serverAddress = new InetSocketAddress(host, port);
 		try {
 			client = new Socket();
 			client.connect(serverAddress, timeout);
@@ -86,7 +89,7 @@ public class ServerConnection {
 
 			FileHelper.writeCryptedObject(out, cryption, auth);
 
-			in = new ObjectInputStream(/*cryption.decryptInputStream(*/client.getInputStream()/*)*/);
+			in = new ObjectInputStream(/* cryption.decryptInputStream( */client.getInputStream()/* ) */);
 			System.out.println("ObjectInputtStream created");
 
 			conncetionMessage = (ConnectionMessage) FileHelper.readCryptedObject(in, cryption);

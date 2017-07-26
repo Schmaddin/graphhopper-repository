@@ -26,6 +26,8 @@ public class FileHelper {
 
     static public DateFormat recoverDate = new SimpleDateFormat("yyyy-MM-dd");
 
+    static public DateFormat monthGerman = new SimpleDateFormat("dd.MM.yyyy");
+    
     public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
     static private DateFormat dfSeconds = new SimpleDateFormat(DATE_FORMAT);
@@ -121,4 +123,7 @@ public class FileHelper {
 		System.out.println("object read");
 		return cryption.decrypt(readIn);
 	}
+	
+	 
+
 }

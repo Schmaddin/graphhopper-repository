@@ -99,4 +99,35 @@ public class TransportTypeHelper {
                 return "~ 5 - 7 pesos";
         }
     }
+    
+    
+    public static float maxPricePerUnit(TransportType type){
+        switch (type){
+            case official:
+                return 6.0f;
+            case metro:
+                return 5.0f;
+            case metrobús:
+                return 6.0f;
+            case microbús:
+                return 6.5f;
+            case autobús:
+                return 7.5f;
+            case vagoneta:
+                return 6.0f;
+            case trolebús:
+                return 4.0f;
+            case rtp:
+                return 5.0f;
+            case mexibús:
+                return 7.0f;
+            case pumabús:
+                return 0.0f;
+            case tren_suburbano:
+                return 17.5f;
+
+            default:
+                return 7.0f;
+        }
+    }
 }

@@ -29,6 +29,8 @@ public class RoutesSpatialIndex {
 			for (Integer routeId : routes.keySet()) {
 				List<GPXEntry> gpx = routes.get(routeId).getGpxTrace();
 				Coordinate[] points = new Coordinate[gpx.size()];
+				if(points.length<2)
+					continue;
 
 				// init to a refernce point
 				double minLat = gpx.get(0).lat;

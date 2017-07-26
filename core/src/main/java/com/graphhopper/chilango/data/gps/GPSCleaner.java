@@ -25,7 +25,10 @@ public class GPSCleaner {
 		Entry<Long, GPSPoint> old = null;
 		boolean ignore = true;
 
+		int i=0;
 		for (Entry<Long, GPSPoint> current : gpsMap.entrySet()) {
+			if(i==gpsMap.size()-1)
+				ignore=true;
 			if (!ignore) {
 				double dist = calc.calcDist(old.getValue().lat, old.getValue().lon, current.getValue().lat,
 						current.getValue().lon);
@@ -54,6 +57,7 @@ public class GPSCleaner {
 				old = current;
 				newGPSMap.put(current.getKey(), current.getValue());
 			}
+			i++;
 		}
 		System.out.println("Old size: " + gpsMap.size() + " new size: " + newGPSMap.size());
 
@@ -61,13 +65,17 @@ public class GPSCleaner {
 	}
 	
 	public static Map<Long, GPSPoint> applyMinDistance(Map<Long, GPSPoint> gpsMap,double distance) {
+		int i=0;
+		
 		Map<Long, GPSPoint> newGPSMap = new TreeMap<>();
 		
 		DistanceCalcEarth calc = new DistanceCalcEarth();
 		Entry<Long, GPSPoint> old = null;
 
 		for (Entry<Long, GPSPoint> current : gpsMap.entrySet()) {
-			if (old!=null) {
+			if(i==gpsMap.size()-1)
+				newGPSMap.put(current.getKey(), current.getValue());
+			else if (old!=null) {
 				double dist = calc.calcDist(old.getValue().lat, old.getValue().lon, current.getValue().lat,
 						current.getValue().lon);
 				
@@ -79,6 +87,8 @@ public class GPSCleaner {
 				
 			}else
 				old=current;
+			
+			i++;
 		}
 		
 		return newGPSMap;
