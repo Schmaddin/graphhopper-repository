@@ -1,10 +1,7 @@
 package com.graphhopper.chilango.data;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 public class RouteTimeBound implements Serializable{
 	
@@ -22,18 +19,5 @@ public class RouteTimeBound implements Serializable{
 	public RouteTimeBound(){
 		
 	}
-	
-	/*
-	public void setByOther(RouteTimeBound timeBound)
-	{
-		this.startHour=timeBound.startHour;
-		this.startMinute=timeBound.startMinute;
-		this.lastHour=timeBound.lastHour;
-		this.lastMinute=timeBound.lastMinute;
-		this.trustLevel=timeBound.trustLevel;
-	}*/
-	
-
-	
 
 }

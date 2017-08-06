@@ -13,14 +13,14 @@ public class BusBaseTask extends ChilangoTask{
 
     private final BusBase base;
 
-    public BusBaseTask(BusBaseTask task,long uploadTime,long ticket)
+    public BusBaseTask(BusBaseTask task,long uploadTime,int transactionId)
     {
-    	super(task,uploadTime,ticket);
+    	super(task,uploadTime,transactionId);
     	base=task.getBusBase();
     }
     
-    public BusBaseTask(String path, BusBase base, long uploadTime, long lastEdit, long ticket,String imagePath) {
-        super(path, typeName, base.getBaseName(), base.getLat(),base.getLon(),uploadTime, lastEdit, ticket,imagePath);
+    public BusBaseTask(String path, BusBase base, long uploadTime, long lastEdit, int transactionId,String imagePath) {
+        super(path, typeName, base.getBaseName(), base.getLat(),base.getLon(),uploadTime, lastEdit, transactionId,imagePath);
         this.base=base;
     }
 

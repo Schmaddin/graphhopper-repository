@@ -7,11 +7,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 import com.github.filosganga.geogson.gson.GeometryAdapterFactory;
 import com.github.filosganga.geogson.jts.JtsAdapterFactory;
 import com.google.gson.Gson;
+
 import com.google.gson.GsonBuilder;
+import com.graphhopper.chilango.data.database.SubmitTypeInterface;
 
 public class JsonHelper {
 
@@ -23,11 +26,27 @@ public class JsonHelper {
 	public static String createJsonFromObject(Object object) {
 
 		GsonBuilder newGsonBuilder = new GsonBuilder().serializeSpecialFloatingPointValues().registerTypeAdapterFactory(new GeometryAdapterFactory())
-				.registerTypeAdapterFactory(new JtsAdapterFactory());
+				.registerTypeAdapterFactory(new JtsAdapterFactory()).registerTypeAdapter(SubmitTypeInterface.class, new InterfaceAdapter<SubmitTypeInterface>());
 		Gson gson = newGsonBuilder.create();
-		return gson.toJson(object);
+		
+		return gson.toJson(object,object.getClass());
 	}
 
+	public static String createJsonFromObjectAndroid(Object object) {
+
+		GsonBuilder newGsonBuilder = new GsonBuilder().serializeSpecialFloatingPointValues().registerTypeAdapter(SubmitTypeInterface.class, new InterfaceAdapter<SubmitTypeInterface>());
+		Gson gson = newGsonBuilder.create();
+		
+		return gson.toJson(object,object.getClass());
+	}
+	
+	public static Object parseJsonAndroid(String json,Type type){
+		GsonBuilder newGsonBuilder = new GsonBuilder().serializeSpecialFloatingPointValues().registerTypeAdapter(SubmitTypeInterface.class, new InterfaceAdapter<SubmitTypeInterface>());
+		Gson gson = newGsonBuilder.create();
+
+		return (Object) gson.fromJson(json, type);
+	}
+	
 	public static boolean writeJsonToFile(String jsonString, String saveTo) {
 
 		try (BufferedWriter w = new BufferedWriter(new FileWriter(saveTo))) {
@@ -60,11 +79,11 @@ public class JsonHelper {
 		return parseJson(json,classType);
 	}
 
-	public static Object parseJson(String json,Class classType){
+	public static Object parseJson(String json,Type type){
 		GsonBuilder newGsonBuilder = new GsonBuilder().serializeSpecialFloatingPointValues().registerTypeAdapterFactory(new GeometryAdapterFactory())
-				.registerTypeAdapterFactory(new JtsAdapterFactory());
+				.registerTypeAdapterFactory(new JtsAdapterFactory()).registerTypeAdapter(SubmitTypeInterface.class, new InterfaceAdapter<SubmitTypeInterface>());
 		Gson gson = newGsonBuilder.create();
-		return (Object) gson.fromJson(json, classType);
+		return (Object) gson.fromJson(json, type);
 	}
 
 }

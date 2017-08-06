@@ -23,18 +23,18 @@ public class RecordTask extends ChilangoTask {
 
     protected final Route route;
 
-    public RecordTask(RecordTask task,long uploadTime,long ticket){
-    	super(task,uploadTime,ticket);
+    public RecordTask(RecordTask task,long uploadTime,int transactionId){
+    	super(task,uploadTime,transactionId);
     	route=task.getRoute();
     }
     
-    public RecordTask(Route route,String path,SubmitType type,long lastEdit,long uploadTime,long ticket,String imagePath) {
-        super(path,type,route.getRouteName()+" "+route.getHeadSign(),route.getLat()[0],route.getLon()[0],uploadTime,lastEdit,ticket,imagePath);
+    public RecordTask(Route route,String path,SubmitType type,long lastEdit,long uploadTime,int transactionId,String imagePath) {
+        super(path,type,route.getRouteName()+" "+route.getHeadSign(),route.getLat()[0],route.getLon()[0],uploadTime,lastEdit,transactionId,imagePath);
         this.route = route;
     }
 
-    public RecordTask(Route route, String path,long lastEdit,long uploadTime,long ticket,String imagePath) {
-        this(route,path,SubmitType.submit_route,lastEdit,uploadTime,ticket,imagePath);
+    public RecordTask(Route route, String path,long lastEdit,long uploadTime,int transactionId,String imagePath) {
+        this(route,path,SubmitType.submit_route,lastEdit,uploadTime,transactionId,imagePath);
     }
 
     @Override

@@ -11,7 +11,7 @@ import com.graphhopper.chilango.data.database.SubmitTypeInterface;
  * Created by martinwurflein on 25.04.17.
  */
 
-public abstract class ChilangoTask implements Serializable, SubmitTypeInterface{
+public abstract class ChilangoTask extends SubmitTypeInterface implements Serializable {
 
 
     /**
@@ -25,14 +25,14 @@ public abstract class ChilangoTask implements Serializable, SubmitTypeInterface{
     protected final int type;
     protected final long uploadTime;
     protected final long lastEdit;
-    protected final long ticket;
+    protected final int transactionId;
     protected final String imagePath;
 
 
 
     protected transient int iconId;
     
-    protected ChilangoTask(ChilangoTask task,long uploadTime,long ticket){
+    protected ChilangoTask(ChilangoTask task,long uploadTime,int transactionId){
     	name=task.getName();
     	path=task.getPath();
     	latitude=task.getLatitude();
@@ -41,10 +41,10 @@ public abstract class ChilangoTask implements Serializable, SubmitTypeInterface{
     	lastEdit=task.getLastEdit();
     	imagePath=task.getImagePath();
     	this.uploadTime=uploadTime;
-    	this.ticket=ticket;
+    	this.transactionId=transactionId;
     }
     
-    protected ChilangoTask(String path,SubmitType type,String name,double latitude,double longitude,long uploadTime,long lastEdit,long ticket,String imagePath) {
+    protected ChilangoTask(String path,SubmitType type,String name,double latitude,double longitude,long uploadTime,long lastEdit,int transactionId,String imagePath) {
         this.type = type.getValue();
         this.path = path;
         this.name = name;
@@ -52,7 +52,7 @@ public abstract class ChilangoTask implements Serializable, SubmitTypeInterface{
         this.longitude = longitude;
         this.uploadTime = uploadTime;
         this.lastEdit = lastEdit;
-        this.ticket = ticket;
+        this.transactionId = transactionId;
         this.imagePath = imagePath;
     }
 
@@ -92,7 +92,7 @@ public abstract class ChilangoTask implements Serializable, SubmitTypeInterface{
         return lastEdit;
     }
 
-    public long getTicket() { return ticket; }
+    public int getTransactionId() { return transactionId; }
     
 
 }

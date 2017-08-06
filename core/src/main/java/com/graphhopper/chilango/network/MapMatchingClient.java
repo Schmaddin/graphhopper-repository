@@ -82,7 +82,7 @@ public class MapMatchingClient {
 
 	public Map<Long, GPSPoint> match(Map<Long, GPSPoint> gpsList) {
 		try {
-			
+			System.out.println(gpsList.size()+" size of input");
 			out = new ObjectOutputStream(client.getOutputStream());
 			System.out.println("in/out-stream created");
 

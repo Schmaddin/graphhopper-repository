@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public enum SubmitType implements Serializable {
 	route_not_found(0), route_not_exist(1), route_meta_wrong(2), route_time_wrong(3), route_points_wrong(
-			4), route_frequency(5), is_route_alright(6), is_timeTable_alright(7), is_frequency_alright(8), route_ok(
+			4), route_frequency(5), route_alright(6), timeTable_alright(7), frequency_alright(8), route_ok(
 					100), invalid(-1), route_gps_Validation(20), submit_undefined_task(999), submit_route(
 							1000), submit_new_gps_route(1001), submit_new_draw_route(
 									1002), submit_route_indication(1005), submit_base_indication(1006), moderation(15);
@@ -18,6 +18,7 @@ public enum SubmitType implements Serializable {
 	public int getValue() {
 		return value;
 	}
+	
 
 	public static SubmitType getByValue(int value) {
 		switch (value) {
@@ -34,11 +35,11 @@ public enum SubmitType implements Serializable {
 		case 5:
 			return route_frequency;
 		case 6:
-			return is_route_alright;
+			return route_alright;
 		case 7:
-			return is_timeTable_alright;
+			return timeTable_alright;
 		case 8:
-			return is_frequency_alright;
+			return frequency_alright;
 		case 15:
 			return moderation;
 		case 20:

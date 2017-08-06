@@ -5,33 +5,34 @@ import java.io.Serializable;
 import com.graphhopper.chilango.data.database.SubmitType;
 import com.graphhopper.chilango.data.database.SubmitTypeInterface;
 
-public class ExplicitRouteMessage implements Serializable, SubmitTypeInterface{
+public class Feedback extends SubmitTypeInterface implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	
-	public ExplicitRouteMessage(ExplicitRouteMessage message,long ticket)
-	{
-		type=message.getType().getValue();
-		route=message.getRoute();
-		routeId=message.getRouteId();
-		timestamp=message.getTimestamp();
-		lat=message.getLat();
-		lon=message.getLon();
-		bound=message.getBound();
-		questionary=message.getQuestionary();
-		suggestion=message.isSuggestion();
-		comment=message.getComment();
-		extra=message.getExtra();
-		this.ticket=ticket;
+
+	public Feedback(Feedback message, int transactionId, int routeId) {
+		type = message.getType().getValue();
+		route = message.getRoute();
+		this.routeId = routeId;
+		timestamp = message.getTimestamp();
+		lat = message.getLat();
+		lon = message.getLon();
+		bound = message.getBound();
+		questionary = message.getQuestionary();
+		suggestion = message.isSuggestion();
+		comment = message.getComment();
+		extra = message.getExtra();
+		this.transactionId = transactionId;
 	}
 
-	
-	public ExplicitRouteMessage(SubmitType type,Route route, int routeId, long timestamp, double lat, double lon,
+	public Feedback(Feedback message, int transactionId) {
+		this(message, transactionId, message.getRouteId());
+	}
+
+	public Feedback(SubmitType type, Route route, int routeId, long timestamp, double lat, double lon,
 			RouteTimeBound bound, RouteQuestionary questionary, boolean suggestion, String comment,
-			Serializable[] extra,long ticket) {
+			String[] extra, int transactionId) {
 		super();
 		this.type = type.getValue();
 		this.route = route;
@@ -44,46 +45,60 @@ public class ExplicitRouteMessage implements Serializable, SubmitTypeInterface{
 		this.suggestion = suggestion;
 		this.comment = comment;
 		this.extra = extra;
-		this.ticket = ticket;
+		this.transactionId = transactionId;
 	}
-	
+
 	public Route getRoute() {
 		return route;
 	}
+
 	public int getRouteId() {
 		return routeId;
 	}
+
 	public long getTimestamp() {
 		return timestamp;
 	}
+
 	public double getLat() {
 		return lat;
 	}
+
 	public double getLon() {
 		return lon;
 	}
+
 	public RouteTimeBound getBound() {
 		return bound;
 	}
+
 	public RouteQuestionary getQuestionary() {
 		return questionary;
 	}
+
 	public boolean isSuggestion() {
 		return suggestion;
 	}
+
 	public String getComment() {
 		return comment;
 	}
-	public Serializable[] getExtra() {
+
+	/**
+	 * Extra as Json objects
+	 * @return
+	 */
+	public String[] getExtra() {
 		return extra;
 	}
-	public long getTicket() {
-		return ticket;
+
+	public int getTransactionId() {
+		return transactionId;
 	}
-	public SubmitType getType(){
+
+	public SubmitType getType() {
 		return SubmitType.getByValue(type);
 	}
-	
 
 	private final int type;
 	private final Route route;
@@ -95,7 +110,7 @@ public class ExplicitRouteMessage implements Serializable, SubmitTypeInterface{
 	private final RouteQuestionary questionary;
 	private final boolean suggestion;
 	private final String comment;
-	private final Serializable extra[];
-	private final long ticket;
+	private final String extra[];
+	private final int transactionId;
 
 }

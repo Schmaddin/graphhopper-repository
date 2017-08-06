@@ -18,4 +18,5 @@ public class RouteQuestionary implements Serializable{
 	public int rushHourFrequency;
 	public int normalFrequency;
 	public int nightFrequency;
+	public int weekendFrequency;
 }

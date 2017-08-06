@@ -6,7 +6,7 @@ import com.graphhopper.chilango.data.database.SubmitType;
 import com.graphhopper.chilango.data.database.SubmitTypeInterface;
 import com.graphhopper.chilango.network.Constants;
 
-public class ModerationTask implements SubmitTypeInterface,  Serializable{
+public class ModerationTask extends SubmitTypeInterface implements Serializable{
 	
 	/**
 	 * 

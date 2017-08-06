@@ -33,9 +33,9 @@ public class GPSRecordTask extends RecordTask{
     private final Map<Long, Integer> fullness;
     private final RouteQuestionary questionary;
 
-    public GPSRecordTask(GPSRecordTask task, long uploadTime,long ticket)
+    public GPSRecordTask(GPSRecordTask task, long uploadTime,int transactionId)
     {
-    	super(task,uploadTime,ticket);
+    	super(task,uploadTime,transactionId);
     	
     	gpsMap=task.getGpsMap();
     	originalGPSMap=task.getOriginalGPSMap();
@@ -46,8 +46,8 @@ public class GPSRecordTask extends RecordTask{
 
     public static final SubmitType typeName=SubmitType.submit_new_gps_route;
 
-    public GPSRecordTask(Route route, String path, Map<Long,GPSPoint> gpsMap, Map<Long, Integer> fullness,Map<Long,GPSPoint> originalGPSMap,RouteQuestionary questionary,long uploadTime,long lastEdit,long ticket,String imagePath) {
-        super(route,path,typeName,lastEdit,uploadTime,ticket,imagePath);
+    public GPSRecordTask(Route route, String path, Map<Long,GPSPoint> gpsMap, Map<Long, Integer> fullness,Map<Long,GPSPoint> originalGPSMap,RouteQuestionary questionary,long uploadTime,long lastEdit,int transactionId,String imagePath) {
+        super(route,path,typeName,lastEdit,uploadTime,transactionId,imagePath);
         this.gpsMap=gpsMap;
         this.fullness=fullness;
         this.originalGPSMap=originalGPSMap;

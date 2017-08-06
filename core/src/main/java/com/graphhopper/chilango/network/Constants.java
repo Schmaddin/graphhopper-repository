@@ -19,10 +19,9 @@ public class Constants {
 	
 	public static final String MAP_MATCH_SERVER = "mapmatch."+SERVER_IP;
 
-	public static final String MAIL_SERVER = "https://mailconf."+SERVER_IP;
+	public static final String MAIL_SERVER = "https://srv."+SERVER_IP+"/WebService/api/mail";
 	
-	public static final String SERVICE_SERVER = "https://srv."+SERVER_IP;
-	
+	public static final String SERVICE_SERVER = "https://srv."+SERVER_IP+"/WebService/api/main";
 	
 	// Ports
 	//server
