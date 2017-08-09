@@ -10,7 +10,7 @@ public enum RequestType implements Serializable {
 									3334), ChangeTransaction(3335), ConfirmTransaction(3336), DismissTransaction(
 											3337), RequestRoutes(3338), RequestRoute(3339), ChangeRoute(
 													3340), RequestUser(3341), ChangeUser(3342), RequestFeedback(
-															3345), RequestFeedbacks(3346), ChangeFeedback(3347);
+															3345), RequestFeedbacks(3346), ChangeFeedback(3347), CreateHighscore(3348), DeployRoutes(3349);
 
 	private final int value;
 
@@ -79,7 +79,10 @@ public enum RequestType implements Serializable {
 			return RequestFeedbacks;
 		case 3347:
 			return ChangeFeedback;
-
+		case 3348:
+			return CreateHighscore;
+		case 3349:
+			return DeployRoutes;
 		default:
 			return no;
 		}

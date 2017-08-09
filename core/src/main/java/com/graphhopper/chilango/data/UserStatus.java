@@ -7,7 +7,7 @@ import com.graphhopper.chilango.data.database.PointModel;
 
 public class UserStatus implements Serializable {
 
-	
+
 	public int getPoints() {
 		return points;
 	}
@@ -39,12 +39,18 @@ public class UserStatus implements Serializable {
 	}
 	
 	
-	public UserStatus(int points, int placeExplore, int placeRevise, String name, int status, long pointsUpdate,
+	public int getPlaceHighscore() {
+		return placeHighscore;
+	}
+
+	
+	public UserStatus(int points, int placeExplore, int placeRevise, int placeHighscore, String name, int status, long pointsUpdate,
 			List<PointModel> pointSinceUpdate,double homeLat,double homeLon,double workLat,double workLon,int team,byte trust) {
 		super();
 		this.points = points;
 		this.placeExplore = placeExplore;
 		this.placeRevise = placeRevise;
+		this.placeHighscore = placeHighscore;
 		this.name = name;
 		this.status = status;
 		this.pointsUpdate = pointsUpdate;
@@ -79,6 +85,7 @@ public class UserStatus implements Serializable {
 	private final int points;
 	private final int placeExplore;
 	private final int placeRevise;
+	private final int placeHighscore;
 	private final String name;
 	private final int status;
 	private final byte trust;
