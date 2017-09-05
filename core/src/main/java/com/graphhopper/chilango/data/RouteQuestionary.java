@@ -9,7 +9,7 @@ public class RouteQuestionary implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	public int routeId;
-	public Date date;
+	public long time;
 	public float comfortableRating;
 	public float driverRating;
 	public float securityRating;

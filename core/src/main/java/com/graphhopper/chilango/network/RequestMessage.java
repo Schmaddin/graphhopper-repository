@@ -22,14 +22,23 @@ public class RequestMessage implements Serializable {
 		return info;
 	}
 
-	public RequestMessage(RequestType type, Serializable information) {
+	public RequestMessage(RequestType type, Serializable information,boolean android) {
 		super();
 		this.type = type.getValue();
-		if (information != null)
+		if (information != null){
+			if(android)
 			this.info = JsonHelper.createJsonFromObjectAndroid(information);
+			else
+			this.info = JsonHelper.createJsonFromObject(information);
+		}
 		else
 			this.info = null;
 	}
+	
+	public RequestMessage(RequestType type, Serializable information) {
+		this(type,information,true);
+	}
+	
 
 	private final int type;
 

@@ -22,4 +22,6 @@ package com.graphhopper.util;
  */
 public interface ProgressListener {
     void update(long val);
+
+	void finished();
 }

@@ -79,7 +79,7 @@ public final class Route implements Serializable {
 		this.longKm = route.getLongKm();
 		this.from = route.getFrom();
 		this.to = route.getTo();
-		this.chilangoId = route.getChilangoId();
+		this.chilangoId = routeId;
 		this.routeName = route.getRouteName();
 		this.headSign = route.getHeadSign();
 		this.frequency = route.getFrequency();

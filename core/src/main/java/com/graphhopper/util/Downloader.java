@@ -24,123 +24,173 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
+import javax.net.ssl.HttpsURLConnection;
+
 /**
  * @author Peter Karich
  */
 public class Downloader {
-    private final String userAgent;
-    private String referrer = "http://graphhopper.com";
-    private String acceptEncoding = "gzip, deflate";
-    private int timeout = 4000;
+	private final String userAgent;
+	private String referrer = "http://graphhopper.com";
+	private String acceptEncoding = "gzip, deflate";
+	private int timeout = 4000;
 
-    public Downloader(String userAgent) {
-        this.userAgent = userAgent;
-    }
+	public Downloader(String userAgent) {
+		this.userAgent = userAgent;
+	}
 
-    public static void main(String[] args) throws IOException {
-        new Downloader("GraphHopper Downloader").downloadAndUnzip("http://graphhopper.com/public/maps/0.1/europe_germany_berlin.ghz", "somefolder",
-                new ProgressListener() {
-                    @Override
-                    public void update(long val) {
-                        System.out.println("progress:" + val);
-                    }
-                });
-    }
+	public static void main(String[] args) throws IOException {
+		new Downloader("GraphHopper Downloader").downloadAndUnzip(
+				"http://graphhopper.com/public/maps/0.1/europe_germany_berlin.ghz", "somefolder",
+				new ProgressListener() {
+					@Override
+					public void update(long val) {
+						System.out.println("progress:" + val);
+					}
 
-    public Downloader setTimeout(int timeout) {
-        this.timeout = timeout;
-        return this;
-    }
+					@Override
+					public void finished() {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+	}
 
-    public Downloader setReferrer(String referrer) {
-        this.referrer = referrer;
-        return this;
-    }
+	public Downloader setTimeout(int timeout) {
+		this.timeout = timeout;
+		return this;
+	}
 
-    /**
-     * This method initiates a connect call of the provided connection and returns the response
-     * stream. It only returns the error stream if it is available and readErrorStreamNoException is
-     * true otherwise it throws an IOException if an error happens. Furthermore it wraps the stream
-     * to decompress it if the connection content encoding is specified.
-     */
-    public InputStream fetch(HttpURLConnection connection, boolean readErrorStreamNoException) throws IOException {
-        // create connection but before reading get the correct inputstream based on the compression and if error
-        connection.connect();
+	public Downloader setReferrer(String referrer) {
+		this.referrer = referrer;
+		return this;
+	}
 
-        InputStream is;
-        if (readErrorStreamNoException && connection.getResponseCode() >= 400 && connection.getErrorStream() != null)
-            is = connection.getErrorStream();
-        else
-            is = connection.getInputStream();
+	/**
+	 * This method initiates a connect call of the provided connection and
+	 * returns the response stream. It only returns the error stream if it is
+	 * available and readErrorStreamNoException is true otherwise it throws an
+	 * IOException if an error happens. Furthermore it wraps the stream to
+	 * decompress it if the connection content encoding is specified.
+	 */
+	public InputStream fetch(HttpURLConnection connection, boolean readErrorStreamNoException) throws IOException {
+		// create connection but before reading get the correct inputstream
+		// based on the compression and if error
+		connection.connect();
 
-        if (is == null)
-            throw new IOException("Stream is null. Message:" + connection.getResponseMessage());
+		InputStream is;
+		if (readErrorStreamNoException && connection.getResponseCode() >= 400 && connection.getErrorStream() != null)
+			is = connection.getErrorStream();
+		else
+			is = connection.getInputStream();
 
-        // wrap
-        try {
-            String encoding = connection.getContentEncoding();
-            if (encoding != null && encoding.equalsIgnoreCase("gzip"))
-                is = new GZIPInputStream(is);
-            else if (encoding != null && encoding.equalsIgnoreCase("deflate"))
-                is = new InflaterInputStream(is, new Inflater(true));
-        } catch (IOException ex) {
-        }
+		if (is == null)
+			throw new IOException("Stream is null. Message:" + connection.getResponseMessage());
 
-        return is;
-    }
+		// wrap
+		try {
+			String encoding = connection.getContentEncoding();
+			if (encoding != null && encoding.equalsIgnoreCase("gzip"))
+				is = new GZIPInputStream(is);
+			else if (encoding != null && encoding.equalsIgnoreCase("deflate"))
+				is = new InflaterInputStream(is, new Inflater(true));
+		} catch (IOException ex) {
+		}
 
-    public InputStream fetch(String url) throws IOException {
-        return fetch((HttpURLConnection) createConnection(url), false);
-    }
+		return is;
+	}
 
-    public HttpURLConnection createConnection(String urlStr) throws IOException {
-        URL url = new URL(urlStr);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        // Will yield in a POST request: conn.setDoOutput(true);
-        conn.setDoInput(true);
-        conn.setUseCaches(true);
-        conn.setRequestProperty("Referrer", referrer);
-        conn.setRequestProperty("User-Agent", userAgent);
-        // suggest respond to be gzipped or deflated (which is just another compression)
-        // http://stackoverflow.com/q/3932117
-        conn.setRequestProperty("Accept-Encoding", acceptEncoding);
-        conn.setReadTimeout(timeout);
-        conn.setConnectTimeout(timeout);
-        return conn;
-    }
+	public InputStream fetch(String url) throws IOException {
+		return fetch((HttpURLConnection) createConnection(url), false);
+	}
 
-    public void downloadFile(String url, String toFile) throws IOException {
-        HttpURLConnection conn = createConnection(url);
-        InputStream iStream = fetch(conn, false);
-        int size = 8 * 1024;
-        BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(toFile), size);
-        InputStream in = new BufferedInputStream(iStream, size);
-        try {
-            byte[] buffer = new byte[size];
-            int numRead;
-            while ((numRead = in.read(buffer)) != -1) {
-                writer.write(buffer, 0, numRead);
-            }
-        } finally {
-            Helper.close(writer);
-            Helper.close(in);
-        }
-    }
+	public HttpURLConnection createConnection(String urlStr) throws IOException {
+		URL url = new URL(urlStr);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		// Will yield in a POST request: conn.setDoOutput(true);
+		conn.setDoInput(true);
+		conn.setUseCaches(true);
+		conn.setRequestProperty("Referrer", referrer);
+		conn.setRequestProperty("User-Agent", userAgent);
+		// suggest respond to be gzipped or deflated (which is just another
+		// compression)
+		// http://stackoverflow.com/q/3932117
+		conn.setRequestProperty("Accept-Encoding", acceptEncoding);
+		conn.setReadTimeout(timeout);
+		conn.setConnectTimeout(timeout);
+		return conn;
+	}
 
-    public void downloadAndUnzip(String url, String toFolder, final ProgressListener progressListener) throws IOException {
-        HttpURLConnection conn = createConnection(url);
-        final int length = conn.getContentLength();
-        InputStream iStream = fetch(conn, false);
+	public void downloadFile(String url, String toFile) throws IOException {
+		HttpURLConnection conn = createConnection(url);
+		InputStream iStream = fetch(conn, false);
+		int size = 8 * 1024;
+		BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(toFile), size);
+		InputStream in = new BufferedInputStream(iStream, size);
+		try {
+			byte[] buffer = new byte[size];
+			int numRead;
+			while ((numRead = in.read(buffer)) != -1) {
+				writer.write(buffer, 0, numRead);
+			}
+		} finally {
+			Helper.close(writer);
+			Helper.close(in);
+		}
+	}
 
-        new Unzipper().unzip(iStream, new File(toFolder), new ProgressListener() {
-            @Override
-            public void update(long sumBytes) {
-                progressListener.update((int) (100 * sumBytes / length));
-            }
-        });
-    }
+	public HttpsURLConnection createHTTPSConnection(String urlStr) throws IOException {
+		URL url = new URL(urlStr);
+		HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+		// Will yield in a POST request: conn.setDoOutput(true);
+		conn.setDoInput(true);
+		conn.setUseCaches(true);
+		conn.setRequestProperty("Referrer", referrer);
+		conn.setRequestProperty("User-Agent", userAgent);
+		// suggest respond to be gzipped or deflated (which is just another
+		// compression)
+		// http://stackoverflow.com/q/3932117
+		conn.setRequestProperty("Accept-Encoding", acceptEncoding);
+		conn.setReadTimeout(timeout);
+		conn.setConnectTimeout(timeout);
+		return conn;
+	}
 
-    public String downloadAsString(String url, boolean readErrorStreamNoException) throws IOException {
-        return Helper.isToString(fetch((HttpURLConnection) createConnection(url), readErrorStreamNoException));
-    }
+	public void downloadAndUnzip(String url, String toFolder, final ProgressListener progressListener) throws IOException
+	{	
+		downloadAndUnzip(url,toFolder,progressListener,false);
+	}
+	
+	public void downloadAndUnzip(String url, String toFolder, final ProgressListener progressListener, boolean https)
+			throws IOException {
+		HttpURLConnection conn;
+		if (https)
+			conn = createHTTPSConnection(url);
+		else
+			conn = createConnection(url);
+		System.out.println("download and unzip: connection created");
+		final int length = conn.getContentLength();
+		InputStream iStream = fetch(conn, false);
+
+		System.out.println("download and unzip: fetching");
+
+		new Unzipper().unzip(iStream, new File(toFolder), new ProgressListener() {
+			@Override
+			public void update(long sumBytes) {
+				progressListener.update((int) (100 * sumBytes / length));
+
+				System.out.println("download and unzip: bytes: " + sumBytes);
+			}
+
+			@Override
+			public void finished() {
+				System.out.println("finished unzipping");
+				progressListener.finished();
+			}
+		});
+	}
+
+	public String downloadAsString(String url, boolean readErrorStreamNoException) throws IOException {
+		return Helper.isToString(fetch((HttpURLConnection) createConnection(url), readErrorStreamNoException));
+	}
 }

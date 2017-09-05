@@ -25,63 +25,67 @@ import java.util.zip.ZipInputStream;
  * @author Peter Karich
  */
 public class Unzipper {
-    public void unzip(String from, boolean remove) throws IOException {
-        String to = Helper.pruneFileEnd(from);
-        unzip(from, to, remove);
-    }
+	public void unzip(String from, boolean remove) throws IOException {
+		String to = Helper.pruneFileEnd(from);
+		unzip(from, to, remove);
+	}
 
-    public boolean unzip(String fromStr, String toStr, boolean remove) throws IOException {
-        File from = new File(fromStr);
-        if (!from.exists() || fromStr.equals(toStr))
-            return false;
+	public boolean unzip(String fromStr, String toStr, boolean remove) throws IOException {
+		File from = new File(fromStr);
+		if (!from.exists() || fromStr.equals(toStr))
+			return false;
 
-        unzip(new FileInputStream(from), new File(toStr), null);
+		unzip(new FileInputStream(from), new File(toStr), null);
 
-        if (remove)
-            Helper.removeDir(from);
-        return true;
-    }
+		if (remove)
+			Helper.removeDir(from);
+		return true;
+	}
 
-    /**
-     * @param progressListener updates not in percentage but the number of bytes already read.
-     */
-    public void unzip(InputStream fromIs, File toFolder, ProgressListener progressListener) throws IOException {
-        if (!toFolder.exists())
-            toFolder.mkdirs();
+	/**
+	 * @param progressListener
+	 *            updates not in percentage but the number of bytes already
+	 *            read.
+	 */
+	public void unzip(InputStream fromIs, File toFolder, ProgressListener progressListener) throws IOException {
+		if (!toFolder.exists())
+			toFolder.mkdirs();
 
-        long sumBytes = 0;
-        ZipInputStream zis = new ZipInputStream(fromIs);
-        try {
-            ZipEntry ze = zis.getNextEntry();
-            byte[] buffer = new byte[8 * 1024];
-            while (ze != null) {
-                if (ze.isDirectory()) {
-                    new File(toFolder, ze.getName()).mkdir();
-                } else {
-                    double factor = 1;
-                    if (ze.getCompressedSize() > 0 && ze.getSize() > 0)
-                        factor = (double) ze.getCompressedSize() / ze.getSize();
+		long sumBytes = 0;
+		ZipInputStream zis = new ZipInputStream(fromIs);
+		try {
+			ZipEntry ze = zis.getNextEntry();
+			byte[] buffer = new byte[8 * 1024];
+			while (ze != null) {
+				if (ze.isDirectory()) {
+					new File(toFolder, ze.getName()).mkdir();
+				} else {
+					double factor = 1;
+					if (ze.getCompressedSize() > 0 && ze.getSize() > 0)
+						factor = (double) ze.getCompressedSize() / ze.getSize();
 
-                    File newFile = new File(toFolder, ze.getName());
-                    FileOutputStream fos = new FileOutputStream(newFile);
-                    try {
-                        int len;
-                        while ((len = zis.read(buffer)) > 0) {
-                            fos.write(buffer, 0, len);
-                            sumBytes += len * factor;
-                            if (progressListener != null)
-                                progressListener.update(sumBytes);
-                        }
-                    } finally {
-                        fos.close();
-                    }
-                }
+					File newFile = new File(toFolder, ze.getName());
+					FileOutputStream fos = new FileOutputStream(newFile);
+					try {
+						int len;
+						while ((len = zis.read(buffer)) > 0) {
+							fos.write(buffer, 0, len);
+							sumBytes += len * factor;
+							if (progressListener != null)
+								progressListener.update(sumBytes);
+						}
+						if (progressListener != null)
+							progressListener.finished();
+					} finally {
+						fos.close();
+					}
+				}
 
-                ze = zis.getNextEntry();
-            }
-            zis.closeEntry();
-        } finally {
-            zis.close();
-        }
-    }
+				ze = zis.getNextEntry();
+			}
+			zis.closeEntry();
+		} finally {
+			zis.close();
+		}
+	}
 }

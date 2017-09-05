@@ -10,7 +10,11 @@ public enum RequestType implements Serializable {
 									3334), ChangeTransaction(3335), ConfirmTransaction(3336), DismissTransaction(
 											3337), RequestRoutes(3338), RequestRoute(3339), ChangeRoute(
 													3340), RequestUser(3341), ChangeUser(3342), RequestFeedback(
-															3345), RequestFeedbacks(3346), ChangeFeedback(3347), CreateHighscore(3348), DeployRoutes(3349);
+															3345), RequestFeedbacks(3346), ChangeFeedback(
+																	3347), CreateHighscore(3348), DeployRoutes(
+																			3349), CreateMapBoard(
+																					3350), AddValueToMapBoard(
+																							3351), DeployMapBoard(3352), AcceptSubmit(3353), AcceptChange(3354), DeployStatistics(3355), CleanDoubleEntries(3356), CalculateTrustForFeedback(3357);
 
 	private final int value;
 
@@ -83,6 +87,23 @@ public enum RequestType implements Serializable {
 			return CreateHighscore;
 		case 3349:
 			return DeployRoutes;
+		case 3350:
+			return CreateMapBoard;
+		case 3351:
+			return AddValueToMapBoard;
+		case 3352:
+			return DeployMapBoard;
+		case 3353:
+			return AcceptSubmit;
+		case 3354:
+			return AcceptChange;
+		case 3355:
+			return DeployStatistics;
+		case 3356:
+			return CleanDoubleEntries;
+		case 3357:
+			return CalculateTrustForFeedback;
+			
 		default:
 			return no;
 		}

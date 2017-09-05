@@ -3,6 +3,8 @@ package com.graphhopper.chilango.network.livedata;
 import java.io.Serializable;
 
 public class LiveRide implements Serializable{
+
+
 	/**
 	 * 
 	 */
@@ -22,14 +24,23 @@ public class LiveRide implements Serializable{
 	public float getHeading() {
 		return heading;
 	}
+	public float getFull() {
+		return full;
+	}
 	
-	public LiveRide(double lat, double lon, long timeStamp, int transportId, float heading) {
+	public int getRat() {
+		return rat;
+	}
+	
+	public LiveRide(double lat, double lon, long timeStamp, int transportId, float heading,float full,int rat) {
 		super();
 		this.lat = lat;
 		this.lon = lon;
 		this.timeStamp = timeStamp;
 		this.transportId = transportId;
 		this.heading=heading;
+		this.full=full;
+		this.rat=rat;
 	}
 
 	private final double lat;
@@ -37,5 +48,7 @@ public class LiveRide implements Serializable{
 	private final long timeStamp;
 	private final int transportId;
 	private final float heading;
+	private final float full;
+	private final int rat;
 
 }

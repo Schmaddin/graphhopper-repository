@@ -62,6 +62,8 @@ public class TransportTypeHelper {
                 return TransportType.microbús;
             case "tren suburbano":
                 return TransportType.tren_suburbano;
+            case "sub":
+            	return TransportType.tren_suburbano;
             case "pumabús":
                 return TransportType.pumabús;
             default:

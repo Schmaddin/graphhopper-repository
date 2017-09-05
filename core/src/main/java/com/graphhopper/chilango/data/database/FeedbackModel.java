@@ -24,10 +24,10 @@ public class FeedbackModel extends Feedback{
 		this.valid = valid;
 	}
 
-	public FeedbackModel(SubmitType type, Route route, int routeId, long timestamp, double lat, double lon,
+	public FeedbackModel(SubmitType type, Route route, int routeId, long routeEdit, long timestamp, double lat, double lon,
 			RouteTimeBound bound, RouteQuestionary questionary, boolean suggestion, String comment,
 			String[] extra, int transactionId, boolean valid) {
-		super(type, route, routeId, timestamp, lat, lon, bound, questionary, suggestion, comment, extra, transactionId);
+		super(type, route, routeId, timestamp,routeEdit, lat, lon, bound, questionary, suggestion, comment, extra, transactionId);
 		this.valid = valid;
 	}
 

@@ -15,6 +15,7 @@ public class Feedback extends SubmitTypeInterface implements Serializable {
 		type = message.getType().getValue();
 		route = message.getRoute();
 		this.routeId = routeId;
+		this.routeEdit = message.getRouteEdit();
 		timestamp = message.getTimestamp();
 		lat = message.getLat();
 		lon = message.getLon();
@@ -30,13 +31,14 @@ public class Feedback extends SubmitTypeInterface implements Serializable {
 		this(message, transactionId, message.getRouteId());
 	}
 
-	public Feedback(SubmitType type, Route route, int routeId, long timestamp, double lat, double lon,
+	public Feedback(SubmitType type, Route route, int routeId,long routeEdit, long timestamp, double lat, double lon,
 			RouteTimeBound bound, RouteQuestionary questionary, boolean suggestion, String comment,
 			String[] extra, int transactionId) {
 		super();
 		this.type = type.getValue();
 		this.route = route;
 		this.routeId = routeId;
+		this.routeEdit = routeEdit;
 		this.timestamp = timestamp;
 		this.lat = lat;
 		this.lon = lon;
@@ -100,9 +102,14 @@ public class Feedback extends SubmitTypeInterface implements Serializable {
 		return SubmitType.getByValue(type);
 	}
 
+	public long getRouteEdit() {
+		return routeEdit;
+	}
+
 	private final int type;
 	private final Route route;
 	private final int routeId;
+	private final long routeEdit;
 	private final long timestamp;
 	private final double lat;
 	private final double lon;

@@ -10,6 +10,16 @@ public class RouteModel {
 
 	private int routeId;
 	
+	private boolean invalid=false;
+	
+	public boolean isInvalid() {
+		return invalid;
+	}
+
+	public void setInvalid(boolean invalid) {
+		this.invalid = invalid;
+	}
+
 	private Geometry geometry;
 	
 	
